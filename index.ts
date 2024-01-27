@@ -7,7 +7,15 @@ const port  = 3000;
 app.listen(port,()=>{
     console.log(`Server running on port ${port}`)
 })
-app.use(cors())
+
+app.use(
+	cors({
+		origin: '*',
+		methods: '*',
+		allowedHeaders: ['Content-Type', 'Authorization'],
+		credentials: true,
+	  })
+)
 
 app.use(express.json())
 app.use(CRouter);
