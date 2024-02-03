@@ -21,5 +21,5 @@ app.use(express.json())
 app.use(CRouter);
 
 app.get("/",(req:any,res:any)=>{
-    res.send("Server is up and running...")
+    res.send("Server is up and running....")
 })
