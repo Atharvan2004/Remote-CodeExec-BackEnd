@@ -9,14 +9,14 @@ const codeRunner = async (req: any, res: any) => {
  try{
 
   let fileName = uuidv4();
-  const inputValuesFile = fileName;
+  const inputValuesFile = uuidv4();
   const outputFileName = fileName;
   const outputPath = `${outputFileName}`;
 
   let { code, codeLang,inputValues } = req.body;
 
   const codePath = `./temp/${fileName}.${codeLang}`;
-  const inputPath = `./temp/${inputValuesFile}`
+  const inputPath = `./temp/${inputValuesFile}.txt`
   fs.writeFileSync(inputPath, inputValues);
   fs.writeFileSync(codePath, code);
 
