@@ -1,0 +1,6 @@
+version: "3.3"
+services:
+  remote-code-backend:
+    image: vineet073/remote-code-executor
+    ports:
+      - "3000:3000"
