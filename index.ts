@@ -4,6 +4,7 @@ import cors from "cors";
 import http from "http";
 import { Server } from "socket.io";
 import { ACTION} from "./Actions";
+import dbConnect from "./configuration/connectDatabase";
 
 const app = express();
 const server = http.createServer(app);
@@ -113,6 +114,7 @@ server.listen(port, () => {
 });
 
 app.use(cors());
+dbConnect();
 
 app.use(express.json());
 app.use(CRouter);

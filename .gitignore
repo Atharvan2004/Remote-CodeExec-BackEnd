@@ -3,3 +3,4 @@ package-lock.json
 compiledJS
 temp
 remote-secret-key.pem
+.env

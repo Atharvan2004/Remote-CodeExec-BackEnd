@@ -5,9 +5,6 @@ import run from '../utils/command'
 
 
 const codeRunner = async (req: any, res: any) => {
-
- try{
-
   let fileName = uuidv4();
   const inputValuesFile = uuidv4();
 
@@ -16,6 +13,8 @@ const codeRunner = async (req: any, res: any) => {
   const codePath = `./temp/${fileName}.${codeLang}`;
   const inputPath = `./temp/${inputValuesFile}.txt`
   const outputPath = `./temp/${fileName}.txt`;
+ try{
+
   fs.writeFileSync(inputPath, inputValues);
   fs.writeFileSync(codePath, code);
 
@@ -33,12 +32,11 @@ const codeRunner = async (req: any, res: any) => {
       res.status(200).json({message: '', data: {output:output}}
       )
         
-    fs.unlinkSync(codePath); 
-    fs.unlinkSync(inputPath); 
-    fs.unlinkSync(outputPath);
+      fs.unlinkSync(codePath); 
+      fs.unlinkSync(inputPath);
+      fs.unlinkSync(outputPath);
     })
-      
-
+    
   } catch (error) {
     res.status(500).json({ error: "Internal server error", err: error });
   } 
