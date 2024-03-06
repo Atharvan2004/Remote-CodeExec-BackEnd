@@ -3,8 +3,9 @@ import { CRouter } from "./routes/codeRoute";
 import cors from "cors";
 import http from "http";
 import { Server } from "socket.io";
-import { ACTION} from "./Actions";
+import { ACTION } from "./Actions";
 import dbConnect from "./configuration/connectDatabase";
+import Job from "./models/Job";
 
 const app = express();
 const server = http.createServer(app);
@@ -118,6 +119,24 @@ dbConnect();
 
 app.use(express.json());
 app.use(CRouter);
+
+app.get("/status", async (req: any, res: any) => {
+  const jobId = req.query.id;
+  console.log("Status requested for jobID:", jobId);
+  if (jobId == undefined) {
+    res.status(400).json({ success: false, error: "jobID is required" });
+  }
+
+  try {
+    const job = await Job.findById(jobId);
+    if (job == undefined) {
+      res.status(404).json({ success: false, error: "Job not found" });
+    }
+    res.status(200).json({ success: true, data: job });
+  } catch (error) {
+    res.status(404).json({ success: false, error: JSON.stringify(error) });
+  }
+});
 
 app.get("/", (req: any, res: any) => {
   res.send("Server is up and running...");
