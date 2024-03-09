@@ -14,7 +14,7 @@ const jobSchema = new Schema<IJob>({
   language: {
     type: String,
     required: true,
-    enum: ["python", "javascript", "typescript", "java", "c", "cpp"],
+    enum: ["py", "js", "typescript", "java", "c", "cpp"],
   },
   filePath: {
     type: String,
