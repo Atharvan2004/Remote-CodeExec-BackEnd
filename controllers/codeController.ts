@@ -25,8 +25,6 @@ const codeRunner = async (req: any, res: any) => {
     await job.save();
     const jobID = job._id;
 
-    // console.log(job);
-
     res.status(201).json({ success: true, data: { jobID: jobID } });
 
     job.StartedAt = new Date();
@@ -34,12 +32,17 @@ const codeRunner = async (req: any, res: any) => {
     let result = run(codeLang, fileName, inputValuesFile) || "run";
 
     childprocess.exec(result, async (error, stdout, stderr) => {
-      if (error) {
-        return res.status(500).json({ compilation_error: error });
-      } else if (stderr) {
-        return res.status(500).json({ std_error: stderr });
-      }
-
+  if (error) {
+    job.completedAt = new Date();
+    job.status = "failed";
+    job.output = `Compilation error: ${error.message}`;
+    await job.save();
+  } else if (stderr) {
+    job.completedAt = new Date();
+    job.status = "failed";
+    job.output = `Std error: ${stderr}`;
+    await job.save();
+      }else{
       const a = fs.readFileSync(`./temp/${fileName}.txt`);
       const output = a.toString().trim();
 
@@ -54,6 +57,8 @@ const codeRunner = async (req: any, res: any) => {
       fs.unlinkSync(codePath);
       fs.unlinkSync(inputPath);
       fs.unlinkSync(outputPath);
+      }
+      
     });
   } catch (error) {
     job.completedAt = new Date();
