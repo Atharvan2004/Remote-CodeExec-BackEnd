@@ -8,6 +8,7 @@ interface IUser extends Document{
     token?:string;
     resetToken?:string;
     resetPasswordExpires?:Date;
+    userLoggedInCount:number;
 }
 
 
@@ -36,6 +37,10 @@ const userSchema=new Schema<IUser>({
     },
     resetPasswordExpires:{
         type:Date,
+    },
+    userLoggedInCount:{
+        type:Number,
+        default:0
     }
 },
 {timestamps:true});

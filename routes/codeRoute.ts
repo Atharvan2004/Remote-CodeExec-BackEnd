@@ -1,18 +1,14 @@
 import express from "express"
 import {codeRunner}  from "../controllers/codeController";
-import {login,sendOTP,signUp} from '../controllers/authentication'
-import { isAuthorized } from "../middleware/authorization";
-import { resetPassword, resetPasswordToken } from "../controllers/resetPassword";
+import rateLimit from "express-rate-limit";
 
+const codeRouter = express.Router();
+const codeLimiter=rateLimit({
+    windowMs:60 * 60 * 1000,
+    limit:100,
+    message:"You have used your hourly limit of coding on the Code X. Please, wait for sometime."
+  });
 
-const CRouter = express.Router();
+codeRouter.post("/coderunner",codeLimiter,codeRunner);
 
-CRouter.route("/code").post(codeRunner);
-CRouter.route("/login").post(login);
-CRouter.route("/sendOTP").post(sendOTP);
-CRouter.route("/signup").post(signUp);
-CRouter.route("/resetpassword-token").post(resetPasswordToken);
-CRouter.route("/resetpassword").post(resetPassword);
-
-
-export {CRouter}
+export {codeRouter}

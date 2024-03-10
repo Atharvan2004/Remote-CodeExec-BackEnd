@@ -86,7 +86,7 @@ const signUp=async(req:any,res:any)=>{
         
 
         const user=await User.create({userName,email,password:hashedPassword,
-            image:`https://api.dicebear.com/5.x/initials/svg?seed=${userName}`,
+            image:`https://api.dicebear.com/5.x/initials/svg?seed=${userName}`,userLoggedInCount:0
         });
 
         return res.status(200).json({
@@ -115,17 +115,16 @@ const login=async(req:any,res:any)=>{
         
         let user;
         if(custom.includes('@')){
-
-             user=await User.findOne({email:custom});
-            if(!user){
+            user=await User.findOne({email:custom});
+            if(!user || (user && user.userLoggedInCount !== 0)){
                 return res.status(401).json({
                     success:false,
                     message:"User not found"
                 })
             }
         }else{
-             user=await User.findOne({userName:custom});
-            if(!user){
+            user=await User.findOne({userName:custom});
+            if(!user || (user && user.userLoggedInCount !== 0)){
                 return res.status(401).json({
                     success:false,
                     message:"User not found"
@@ -138,6 +137,8 @@ const login=async(req:any,res:any)=>{
                 email:user.email,
                 id:user._id,
             }
+
+            const updatedUser=await User.findByIdAndUpdate(user._id,{userLoggedInCount:1},{new:true});
 
             const jwt_secret=process.env.JWT_SECRET || '';
             const token=jwt.sign(payload,jwt_secret,{
@@ -171,5 +172,32 @@ const login=async(req:any,res:any)=>{
     }
 }
 
+const logout=async(req:any,res:any)=>{
+    try {
+        const{email}=req.body;
 
-export {sendOTP,signUp,login};
+        const user=await User.findOne({email});
+        if(!user){
+            return res.status(401).json({
+                success:false,
+                message:"Couldn't logout, please try again."
+            })
+        }
+
+        const updatedUser=await User.findByIdAndUpdate(user._id,{userLoggedInCount:0},{new:true});
+        if(updatedUser){
+            return res.status(200).json({
+                success:true,
+                message:"Logged out successfully"
+            })
+        }
+    } catch (error) {
+        return res.status(500).json({
+            success:false,
+            message:"Internal error while logging you out."
+        })
+    }
+}
+
+
+export {sendOTP,signUp,login,logout};

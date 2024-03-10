@@ -1,11 +1,13 @@
 import express from "express";
-import { CRouter } from "./routes/codeRoute";
+import { codeRouter } from "./routes/codeRoute";
 import cors from "cors";
 import http from "http";
 import { Server } from "socket.io";
 import { ACTION } from "./Actions";
 import dbConnect from "./configuration/connectDatabase";
 import Job from "./models/Job";
+import { userRouter } from "./routes/userRouter";
+import { authenticationRouter } from "./routes/authenticationRoute";
 
 const app = express();
 const server = http.createServer(app);
@@ -114,11 +116,15 @@ server.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
 
-app.use(cors());
 dbConnect();
 
+app.use(cors());
 app.use(express.json());
-app.use(CRouter);
+
+
+app.use(codeRouter);
+app.use(authenticationRouter);
+app.use(userRouter);
 
 app.get("/status", async (req: any, res: any) => {
   const jobId = req.query.id;

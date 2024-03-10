@@ -25,7 +25,7 @@ const codeRunner = async (req: any, res: any) => {
     await job.save();
     const jobID = job._id;
 
-    console.log(job);
+    // console.log(job);
 
     res.status(201).json({ success: true, data: { jobID: jobID } });
 
@@ -48,7 +48,7 @@ const codeRunner = async (req: any, res: any) => {
       job.output = output;
 
       await job.save();
-      console.log(job);
+      // console.log(job);
       // res.status(200).json({ success: true, data: { output: output } });
 
       fs.unlinkSync(codePath);
@@ -60,7 +60,7 @@ const codeRunner = async (req: any, res: any) => {
     job.status = "failed";
     job.output = JSON.stringify(error);
     await job.save();
-   console.log(error);
+   console.log('Error-->',error);
   }
 };
 
