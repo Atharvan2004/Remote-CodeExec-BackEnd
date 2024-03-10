@@ -9,6 +9,6 @@ const codeLimiter=rateLimit({
     message:"You have used your hourly limit of coding on the Code X. Please, wait for sometime."
   });
 
-codeRouter.post("/coderunner",codeLimiter,codeRunner);
+codeRouter.post("/code",codeLimiter,codeRunner);
 
 export {codeRouter}
