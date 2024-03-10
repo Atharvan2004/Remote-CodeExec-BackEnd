@@ -29,7 +29,6 @@ const otpSchema=new Schema<IOTP>({
 async function sendVerificationMail(email:string,otp:string){
     try {
         const emailResponse=await mailSender(email,"Email Verification",`Your OTP is ${otp}`);
-        console.log("emailResponse:",emailResponse);
     } catch (error) {
         throw error;
     }

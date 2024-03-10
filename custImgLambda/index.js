@@ -33,7 +33,6 @@ const dbConnectAndRun = async (event, context) => {
         await job.save();
         const jobID = job._id;
 
-        console.log(job);
 
         context.succeed({ success: true, data: { jobID } });
 
@@ -57,7 +56,6 @@ const dbConnectAndRun = async (event, context) => {
           job.output = output;
 
           await job.save();
-          console.log(job);
 
           fs.unlinkSync(codePath);
           fs.unlinkSync(inputPath);

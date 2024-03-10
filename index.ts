@@ -29,7 +29,6 @@ function getAllConnectedUsers(roomId: string) {
 }
 
 io.on("connection", (socket) => {
-  console.log("User connected:", socket.id);
 
   socket.on(ACTION.JOIN, ({ roomId, username }) => {
     userSocketMap.set(socket.id, username);
@@ -113,7 +112,6 @@ io.on("connection", (socket) => {
 });
 
 server.listen(port, () => {
-  console.log(`Server running on port ${port}`);
 });
 
 dbConnect();
@@ -128,7 +126,6 @@ app.use(userRouter);
 
 app.get("/status", async (req: any, res: any) => {
   const jobId = req.query.id;
-  console.log("Status requested for jobID:", jobId);
   if (jobId == undefined) {
     res.status(400).json({ success: false, error: "jobID is required" });
   }

@@ -23,7 +23,6 @@ const resetPasswordToken=async(req:any,res:any)=>{
             },
             {new:true}
         );
-        console.log("details:",updatedDetails);
 
         const resetUrl=`${BASE_URL}/update-password/${token}`;
         await mailSender(email,"Password Reset Link",`Password Reset link:\n ${resetUrl}`);

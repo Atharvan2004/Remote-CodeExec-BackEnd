@@ -51,7 +51,6 @@ const codeRunner = async (req: any, res: any) => {
       job.output = output;
 
       await job.save();
-      // console.log(job);
       // res.status(200).json({ success: true, data: { output: output } });
 
       fs.unlinkSync(codePath);
@@ -65,7 +64,6 @@ const codeRunner = async (req: any, res: any) => {
     job.status = "failed";
     job.output = JSON.stringify(error);
     await job.save();
-   console.log('Error-->',error);
   }
 };
 

@@ -17,7 +17,6 @@ async function mailSender(email:string, title:string, body:string){
             subject:`${title}`,
             html:`${body}`
         });
-        console.log("email response:",response);
     } catch (error) {
         return error;
     }

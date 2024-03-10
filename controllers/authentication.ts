@@ -32,13 +32,10 @@ const sendOTP=async(req:any,res:any)=>{
             });
         }
         const otpPayload={email,otp};
-        console.log("otpPayload:",otpPayload);
-        console.log("before opt create");
         const otpBody=await OTP.create(otpPayload);
-        console.log("otpBody:",otpBody);
 
         return res.status(200).json({
-            success:false,
+            success:true,
             message:"OTP sent successfully"
         })
     } catch (error:any) {
